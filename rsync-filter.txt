@@ -1,4 +1,0 @@
-- .git/
-- .github/
-- *.log
-- rsync-filter.txt

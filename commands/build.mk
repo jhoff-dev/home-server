@@ -16,3 +16,9 @@ restart:
 
 prune:
 	docker system prune -a
+
+build-runner:
+	export UID=$(shell id -u)
+	export GID=$(shell id -g)
+	export DOCKER_HOST_GID=$(shell getent group docker | cut -d: -f3)
+	docker compose build github-runner

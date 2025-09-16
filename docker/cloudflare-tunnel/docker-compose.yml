@@ -1,0 +1,14 @@
+services:
+  cloudflared-http:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared-http
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_HTTP_TUNNEL_TOKEN}
+
+  cloudflared-ssh:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared-ssh
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_SSH_TUNNEL_TOKEN}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

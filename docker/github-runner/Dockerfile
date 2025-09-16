@@ -18,8 +18,8 @@ ENV REPOSITORY_URL=$REPOSITORY_URL
 ARG RUNNER_TOKEN
 ENV RUNNER_TOKEN=$RUNNER_TOKEN
 
-COPY runner-entrypoint.sh /home/runner/runner-entrypoint.sh
-RUN chmod +x /home/runner/runner-entrypoint.sh
+COPY runner-entrypoint.sh /home/runner/entrypoint.sh
+RUN chmod +x /home/runner/entrypoint.sh
 
 ARG UID
 ARG GID
@@ -53,4 +53,4 @@ RUN mkdir -p --mode=0755 /usr/share/keyrings && \
 
 USER runner
 
-ENTRYPOINT ["/home/runner/runner-entrypoint.sh"]
+ENTRYPOINT ["/home/runner/entrypoint.sh"]
