@@ -1,0 +1,41 @@
+name: "Rsync Deploy"
+description: "Deploy files using rsync via Cloudflare Tunnel SSH"
+
+inputs:
+  path:
+    description: "Path of files to be copied"
+    required: true
+  remote_path:
+    description: "Remote file destination path"
+    required: true
+  ssh_user:
+    description: "User SSH"
+    required: true
+  ssh_host:
+    description: "Host SSH"
+    required: true
+  cloudflare_tunnel_id:
+    description: "Cloudflare Tunnel ID"
+    required: true
+  cloudflare_tunnel_token:
+    description: "Cloudflare Tunnel Token"
+    required: true
+  switches:
+    description: "Additional rsync options (e.g. -avzr --delete --progress)"
+    required: false
+    default: "-avz"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Rsync deploy
+      shell: bash
+      run: |
+        rsync ${{ inputs.switches }} \
+          -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+          -o ProxyCommand='/usr/local/bin/cloudflared access ssh --hostname %h \
+          --id ${{ inputs.cf_id }} --secret ${{ inputs.cf_token }}'" \
+          "${{ inputs.local_path }}" \
+          "${{ inputs.ssh_user }}@${{ inputs.ssh_host }}:${{ inputs.remote_path }}"
+      
+      

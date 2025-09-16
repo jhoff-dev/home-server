@@ -17,11 +17,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Testing connection SSH
-        run: ssh github-actions@ssh.jhoff.site echo "Connected!"
-
-      - name: Deploy via rsync
-        run: |
-          rsync -avz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-          -o ProxyCommand='/usr/local/bin/cloudflared access ssh --hostname %h --id ${{ secrets.CLOUDFLARE_SSH_TUNNEL_ID }} --secret ${{ secrets.CLOUDFLARE_SSH_TUNNEL_TOKEN }}'" \
-          ./ github-actions@ssh.jhoff.site:/home/github-actions/app/
+      - name: Deploy using our custom rsync action
+        uses: ./.github/actions/rsync-deploy
+        with:
+          local_path: ./
+          remote_path: ${{ vars.SERVER_PATH }}/app
+          ssh_user: ${{ secrets.SSH_DEPLOY_USER }}
+          ssh_host: ${{ secrets.SSH_DEPLOY_HOST }}
+          cloudflare_tunnel_id: ${{ secrets.CLOUDFLARE_SSH_TUNNEL_ID }}
+          cloudflare_tunnel_token: ${{ secrets.CLOUDFLARE_SSH_TUNNEL_TOKEN }}
+          switches: '-avzr -Prltvz -O --no-perms --delete --filter="merge rsync-filter.txt"'
