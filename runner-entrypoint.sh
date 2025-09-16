@@ -1,4 +1,8 @@
+#!/bin/bash
+
 set -e
+
+cd /home/runner
 
 if [ ! -f .runner ]; then
   ./config.sh \

@@ -19,6 +19,8 @@ jobs:
 
       - name: Replace tokens
         run: |
+          sed -i "s|{{REPOSITORY_URL}}|${{ vars.REPOSITORY_URL }}|g" .env
+          sed -i "s|{{GITHUB_RUNNER_TOKEN}}|${{ secrets.GITHUB_RUNNER_TOKEN }}|g" .env
           sed -i "s|{{CLOUDFLARE_HTTP_TUNEL_TOKEN}}|${{ secrets.CLOUDFLARE_HTTP_TUNNEL_TOKEN }}|g" .env
           sed -i "s|{{CLOUDFLARE_SSH_TUNEL_TOKEN}}|${{ secrets.CLOUDFLARE_SSH_TUNNEL_TOKEN }}|g" .env
       
