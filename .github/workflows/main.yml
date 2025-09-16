@@ -16,6 +16,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+
+      - name: Testing connection SSH
+        run: ssh github-actions@ssh.jhoff.site -v
       
       - name: Copying files
         uses: burnett01/rsync-deployments@7.1.0
