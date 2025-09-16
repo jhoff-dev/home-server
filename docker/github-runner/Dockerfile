@@ -18,7 +18,7 @@ ENV REPOSITORY_URL=$REPOSITORY_URL
 ARG RUNNER_TOKEN
 ENV RUNNER_TOKEN=$RUNNER_TOKEN
 
-COPY runner-entrypoint.sh /home/runner/entrypoint.sh
+COPY entrypoint.sh /home/runner/entrypoint.sh
 RUN chmod +x /home/runner/entrypoint.sh
 
 ARG UID
