@@ -1,13 +1,17 @@
 services:
   github-runner:
+    user: "${UID}:${GID}"
     build:
       context: .
       dockerfile: runner.dockerfile
+      args:
+        - REPOSITORY_URL=${REPOSITORY_URL}
+        - RUNNER_TOKEN=${RUNNER_TOKEN}
+        - UID=${UID}
+        - GID=${GID}
+        - DOCKER_HOST_GID=${DOCKER_HOST_GID}
     container_name: github-runner
     restart: unless-stopped
-    environment:
-      - GITHUB_URL=${REPOSITORY_URL}
-      - RUNNER_TOKEN=${GITHUB_RUNNER_TOKEN}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     privileged: true

@@ -27,7 +27,7 @@ jobs:
       - name: Copying files
         uses: burnett01/rsync-deployments@7.1.0
         with:
-          switches: --no-perms -O --filter="merge rsync-filter.txt" --delete -Prltvz
+          switches: --no-perms -O --delete -Prltvz
           path: ./
           remote_path: ${{ vars.SERVER_PATH }}
           remote_host: ${{ secrets.SSH_DEPLOY_HOST }}

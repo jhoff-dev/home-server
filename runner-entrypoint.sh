@@ -6,7 +6,7 @@ cd /home/runner
 
 if [ ! -f .runner ]; then
   ./config.sh \
-    --url "${GITHUB_URL}" \
+    --url "${REPOSITORY_URL}" \
     --token "${RUNNER_TOKEN}" \
     --unattended \
     --replace

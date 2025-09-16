@@ -13,3 +13,6 @@ destroy:
 # Restart the Docker services
 restart:
 	${DOCKER_COMPOSE} restart
+
+prune:
+	docker system prune -a
