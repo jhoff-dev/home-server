@@ -15,11 +15,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions:checkout@v5
+        uses: actions/checkout@v5
 
       - name: Replace tokens
         run: |
-          sed -i "s|{{CLOUDFLARE_TUNEL_TOKEN}}|${{ secrets.CLOUDFLARE_TUNNEL_TOKEN }}|g" .env
+          sed -i "s|{{CLOUDFLARE_HTTP_TUNEL_TOKEN}}|${{ secrets.CLOUDFLARE_HTTP_TUNNEL_TOKEN }}|g" .env
+          sed -i "s|{{CLOUDFLARE_SSH_TUNEL_TOKEN}}|${{ secrets.CLOUDFLARE_SSH_TUNNEL_TOKEN }}|g" .env
       
       - name: Copying files
         uses: burnett01/rsync-deployments@7.1.0
