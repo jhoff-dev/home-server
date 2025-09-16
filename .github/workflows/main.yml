@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Testing connection SSH
-        run: ssh github-actions@ssh.jhoff.site -v
+        run: ssh github-actions@ssh.jhoff.site echo "Connected!"
       
       - name: Copying files
         uses: burnett01/rsync-deployments@7.1.0
