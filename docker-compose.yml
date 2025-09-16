@@ -1,4 +1,17 @@
 services:
+  github-runner:
+    build:
+      context: .
+      dockerfile: runner.dockerfile
+    container_name: github-runner
+    restart: unless-stopped
+    environment:
+      - GITHUB_URL=${GITHUB_URL}
+      - RUNNER_TOKEN=${GITHUB_RUNNER_TOKEN}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    privileged: true
+
   cloudflared-http:
     image: cloudflare/cloudflared:latest
     container_name: cloudflared-http
