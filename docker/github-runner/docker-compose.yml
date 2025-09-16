@@ -10,6 +10,8 @@ services:
         - UID=${UID}
         - GID=${GID}
         - DOCKER_HOST_GID=${DOCKER_HOST_GID}
+        - CLOUDFLARE_SSH_TUNNEL_ID=${CLOUDFLARE_SSH_TUNNEL_ID}
+        - CLOUDFLARE_SSH_TUNNEL_TOKEN=${CLOUDFLARE_SSH_TUNNEL_TOKEN}
     container_name: github-runner
     restart: unless-stopped
     volumes:
