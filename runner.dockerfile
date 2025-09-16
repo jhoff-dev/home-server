@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     libicu-dev \
     libicu74 \
     docker.io \
+    lsb-release \
     && rm -rf /var/lib/apt/lists/*
 
 ARG REPOSITORY_URL
@@ -42,6 +43,13 @@ RUN curl -o actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz -L \
     rm actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz
 
 RUN ./bin/installdependencies.sh
+
+RUN mkdir -p --mode=0755 /usr/share/keyrings && \
+    curl -fsSL https://pkg.cloudflare.com/cloudflare-main.gpg \
+      | tee /usr/share/keyrings/cloudflare-main.gpg >/dev/null && \
+    echo "deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/cloudflared $(lsb_release -cs) main" \
+      | tee /etc/apt/sources.list.d/cloudflared.list && \
+    apt-get update && apt-get install -y cloudflared
 
 USER runner
 
