@@ -19,14 +19,9 @@ jobs:
 
       - name: Testing connection SSH
         run: ssh github-actions@ssh.jhoff.site echo "Connected!"
-      
-      - name: Copying files
-        uses: burnett01/rsync-deployments@7.1.0
-        with:
-          switches: --no-perms -O --delete -Prltvz
-          path: ./
-          remote_path: ${{ vars.SERVER_PATH }}
-          remote_host: ${{ secrets.SSH_DEPLOY_HOST }}
-          remote_port: 22
-          remote_user: ${{ secrets.SSH_DEPLOY_USER }}
-          remote_key: ${{ secrets.SSH_DEPLOY_KEY }}
+
+      - name: Deploy via rsync
+        run: |
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+          -o ProxyCommand='/usr/local/bin/cloudflared access ssh --hostname %h --id ${{ secrets.CLOUDFLARE_SSH_TUNNEL_ID }} --secret ${{ secrets.CLOUDFLARE_SSH_TUNNEL_TOKEN }}'" \
+          ./ github-actions@ssh.jhoff.site:/home/github-actions/app/
