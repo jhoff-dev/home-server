@@ -21,7 +21,7 @@ jobs:
         uses: ./.github/actions/rsync-deploy
         with:
           local_path: ./
-          remote_path: ${{ vars.SERVER_PATH }}/app
+          remote_path: ${{ vars.SERVER_PATH }}app/
           ssh_user: ${{ secrets.SSH_DEPLOY_USER }}
           ssh_host: ${{ secrets.SSH_DEPLOY_HOST }}
           cloudflare_tunnel_id: ${{ secrets.CLOUDFLARE_SSH_TUNNEL_ID }}
