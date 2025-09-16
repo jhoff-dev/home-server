@@ -17,19 +17,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Replace tokens
-        run: |
-          sed -i "s|{{REPOSITORY_URL}}|${{ vars.REPOSITORY_URL }}|g" .env
-          sed -i "s|{{GITHUB_RUNNER_TOKEN}}|${{ secrets.GITHUB_RUNNER_TOKEN }}|g" .env
-          sed -i "s|{{CLOUDFLARE_HTTP_TUNEL_TOKEN}}|${{ secrets.CLOUDFLARE_HTTP_TUNNEL_TOKEN }}|g" .env
-          sed -i "s|{{CLOUDFLARE_SSH_TUNEL_TOKEN}}|${{ secrets.CLOUDFLARE_SSH_TUNNEL_TOKEN }}|g" .env
-      
       - name: Add SSH key
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_DEPLOY_KEY }}
           name: ${{ secrets.SSH_DEPLOY_USER }}
-          known_hosts: ~/.ssh/known_hosts
+          known_hosts: ${{ secrets.SSH_DEPLOY_KNOWN_HOSTS }}
           if_key_exists: replace
           config: |
             Host ${{ secrets.SSH_DEPLOY_HOST }}
