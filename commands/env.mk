@@ -4,6 +4,7 @@
 
 include .env
 
+# Exports user and group IDs for use within docker containers
 export UID=$(shell id -u)
 export GID=$(shell id -g)
 export DOCKER_HOST_GID=$(shell getent group docker | cut -d: -f3)
