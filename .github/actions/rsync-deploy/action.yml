@@ -1,4 +1,4 @@
-name: "Rsync Deploy"
+name: "RSYNC deploy"
 description: "Deploy files using rsync via Cloudflare Tunnel SSH"
 
 inputs:
@@ -28,13 +28,13 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Rsync deploy
+    - name: RSYNC deploy
       shell: bash
       run: |
         rsync ${{ inputs.switches }} \
           -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
           -o ProxyCommand='/usr/local/bin/cloudflared access ssh --hostname %h \
-          --id ${{ inputs.cf_id }} --secret ${{ inputs.cf_token }}'" \
+          --id ${{ inputs.cloudflare_tunnel_id }} --secret ${{ inputs.cloudflare_tunnel_token }}'" \
           "${{ inputs.local_path }}" \
           "${{ inputs.ssh_user }}@${{ inputs.ssh_host }}:${{ inputs.remote_path }}"
       
