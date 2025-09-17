@@ -35,7 +35,7 @@ runs:
           -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
           -o ProxyCommand='/usr/local/bin/cloudflared access ssh --hostname %h \
           --id ${{ inputs.cloudflare_tunnel_id }} --secret ${{ inputs.cloudflare_tunnel_token }}'" \
-          "${{ inputs.local_path }}" \
+          "${{ inputs.path }}" \
           "${{ inputs.ssh_user }}@${{ inputs.ssh_host }}:${{ inputs.remote_path }}"
       
       
