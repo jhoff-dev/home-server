@@ -3,6 +3,9 @@ name: Home server environment
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - docs/**
+      - tests/**
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -21,7 +24,7 @@ jobs:
         uses: ./.github/actions/rsync-deploy
         with:
           path: ./
-          remote_path: ${{ vars.SERVER_PATH }}app/
+          remote_path: ${{ vars.SERVER_PATH }}
           ssh_user: ${{ secrets.SSH_DEPLOY_USER }}
           ssh_host: ${{ secrets.SSH_DEPLOY_HOST }}
           cloudflare_tunnel_id: ${{ secrets.CLOUDFLARE_SSH_TUNNEL_ID }}

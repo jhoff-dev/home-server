@@ -1,0 +1,11 @@
+# Files
+.env
+*.log
+.Zone.Identifier
+.DS_Store
+auth.json
+
+# Folders
+vendor/
+dist/
+node_modules/

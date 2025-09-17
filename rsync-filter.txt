@@ -1,4 +1,9 @@
+- .env
+- *.log
+- .DS_Store
+- .Zone.Identifier
 - .git
 - .github
-- *.log
 - docs/
+- tests/
+- node_modules/
