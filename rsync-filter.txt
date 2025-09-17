@@ -2,6 +2,8 @@
 - *.log
 - .DS_Store
 - .Zone.Identifier
+- .gitignore
+- rsync-filter.txt
 - .git
 - .github
 - docs/
