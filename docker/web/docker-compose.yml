@@ -8,6 +8,8 @@ services:
     volumes:
       - ./nginx/:/etc/nginx/
       - ./sites/:/sites/
+    networks:
+      - main_proxy
   
   database:
     image: mysql:latest
@@ -27,6 +29,8 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
+    networks:
+      - main_proxy
 
   wordpress:
     image: wordpress:php8.4-fpm
@@ -48,6 +52,13 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
+    networks:
+      - main_proxy
+
+networks:
+  main_proxy:
+    name: main_proxy
+    external: true
 
 volumes:
   database:
