@@ -21,3 +21,13 @@ runner-destroy:
 # Build the docker image used in the runner
 runner-build:
 	sh -c "cd docker/github-runner && export UID=$(shell id -u) && export GID=$(shell id -g) && export DOCKER_HOST_GID=$(shell getent group docker | cut -d: -f3) && docker compose build github-runner"
+
+# --- Web ---
+
+# Start the Docker services
+web-up:
+	sh -c "cd docker/web && ${DOCKER_COMPOSE} up -d"
+
+# Destroy the Docker services
+web-destroy:
+	sh -c "cd docker/web&& ${DOCKER_COMPOSE} down --volumes"

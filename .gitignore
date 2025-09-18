@@ -10,5 +10,8 @@ vendor/
 dist/
 node_modules/
 
+docker/web/sites/**/public/*
+
 # Exceptions
+!docker/web/sites/**/public/.gitkeep
 !docker/web/sites/**/*.log
