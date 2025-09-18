@@ -5,3 +5,6 @@ services:
     restart: unless-stopped
     ports:
       - 80:80
+    volumes:
+      - ./nginx/:/etc/nginx/
+      - ./sites/:/sites/
