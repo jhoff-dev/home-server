@@ -19,6 +19,14 @@ services:
     privileged: true
     networks:
       - main_proxy
+    deploy:
+      resources:
+        limits:
+          cpus: 2
+          memory: 4G
+        reservations:
+          cpus: 0.5
+          memory: 512M
 
 networks:
   main_proxy:

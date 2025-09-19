@@ -8,5 +8,6 @@ include .env
 export UID=$(shell id -u)
 export GID=$(shell id -g)
 export DOCKER_HOST_GID=$(shell getent group docker | cut -d: -f3)
+export PROJECT_ROOT=$(shell pwd)
 
-DOCKER_COMPOSE = docker compose -f docker-compose.yml --env-file .env
+DOCKER_COMPOSE = docker compose -f docker-compose.yml --env-file ${PROJECT_ROOT}/docker/.env

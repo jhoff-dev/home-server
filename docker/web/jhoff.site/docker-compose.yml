@@ -1,28 +1,16 @@
 services:
-  nginx:
-    image: nginx:alpine
-    container_name: nginx
-    restart: unless-stopped
-    ports:
-      - 80:80
-    volumes:
-      - ./nginx/:/etc/nginx/
-      - ./sites/:/sites/
-    networks:
-      - main_proxy
-  
-  database:
+  database_jhoff_site:
     image: mysql:latest
-    container_name: database
+    container_name: database-jhoff.site
     restart: unless-stopped
     ports:
       - 3306:3306
     volumes:
       - database:/var/lib/mysql
     environment:
-      MYSQL_ROOT_USER: ${DB_USER}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_ROOT_USER: ${DB_JHOFF_USER}
+      MYSQL_ROOT_PASSWORD: ${DB_JHOFF_PASSWORD}
+      MYSQL_DATABASE: ${DB_JHOFF_NAME}
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${DB_USER}", "--password=${DB_PASSWORD}"]
       start_period: 10s
@@ -31,18 +19,23 @@ services:
       retries: 3
     networks:
       - main_proxy
+    deploy:
+      resources:
+        limits:
+          cpus: 1
+          memory: 1G
 
-  wordpress:
+  wordpress_jhoff_site:
     image: wordpress:php8.4-fpm
-    container_name: wordpress
+    container_name: wordpress-jhoff.site
     restart: unless-stopped
     volumes:
-      - ./sites/jhoff.site/public:/var/www/html
+      - ${PROJECT_ROOT}/docker/web/apps/jhoff.site/public:/var/www/html
     environment:
-      WORDPRESS_DB_HOST: ${DB_HOST}
-      WORDPRESS_DB_USER: ${DB_USER}
-      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD}
-      WORDPRESS_DB_NAME: ${DB_NAME}
+      WORDPRESS_DB_HOST: ${DB_JHOFF_HOST}
+      WORDPRESS_DB_USER: ${DB_JHOFF_USER}
+      WORDPRESS_DB_PASSWORD: ${DB_JHOFF_PASSWORD}
+      WORDPRESS_DB_NAME: ${DB_JHOFF_NAME}
     depends_on:
       database:
         condition: service_healthy
@@ -54,6 +47,11 @@ services:
       retries: 3
     networks:
       - main_proxy
+    deploy:
+      resources:
+        limits:
+          cpus: 1
+          memory: 512M
 
 networks:
   main_proxy:

@@ -1,21 +1,30 @@
-services:
-  cloudflared-http:
+cloudflared-settings:
+  &cloudflared-settings
     image: cloudflare/cloudflared:latest
-    container_name: cloudflared-http
     restart: unless-stopped
-    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_HTTP_TUNNEL_TOKEN}
     networks:
       - main_proxy
+    deploy:
+      resources:
+        limits:
+          cpus: 0.5
+          memory: 100M
+        reservations:
+          cpus: 0.1
+          memory: 50M
+
+services:
+  cloudflared-http:
+    <<: *cloudflared-settings
+    container_name: cloudflared-http
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_HTTP_TUNNEL_TOKEN}
 
   cloudflared-ssh:
-    image: cloudflare/cloudflared:latest
+    <<: *cloudflared-settings
     container_name: cloudflared-ssh
-    restart: unless-stopped
     command: tunnel --no-autoupdate run --token ${CLOUDFLARE_SSH_TUNNEL_TOKEN}
     extra_hosts:
       - "host.docker.internal:host-gateway"
-    networks:
-      - main_proxy
 
 networks:
   main_proxy:
