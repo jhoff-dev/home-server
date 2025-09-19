@@ -12,7 +12,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${DB_JHOFF_PASSWORD}
       MYSQL_DATABASE: ${DB_JHOFF_NAME}
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${DB_USER}", "--password=${DB_PASSWORD}"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${DB_JHOFF_USER}", "--password=${DB_JHOFF_PASSWORD}"]
       start_period: 10s
       interval: 30s
       timeout: 5s
@@ -37,7 +37,7 @@ services:
       WORDPRESS_DB_PASSWORD: ${DB_JHOFF_PASSWORD}
       WORDPRESS_DB_NAME: ${DB_JHOFF_NAME}
     depends_on:
-      database:
+      database_jhoff_site:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "test", "-f", "wp-config.php"]
