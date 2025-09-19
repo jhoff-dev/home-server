@@ -17,12 +17,12 @@ services:
   cloudflared-http:
     <<: *cloudflared-settings
     container_name: cloudflared-http
-    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_HTTP_TUNNEL_TOKEN}
+    command: tunnel --no-autoupdate run --token ${CL_HTTP_JHOFF_TOKEN}
 
   cloudflared-ssh:
     <<: *cloudflared-settings
     container_name: cloudflared-ssh
-    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_SSH_TUNNEL_TOKEN}
+    command: tunnel --no-autoupdate run --token ${CL_SSH_SSHJHOFF_TOKEN}
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
