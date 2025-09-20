@@ -17,15 +17,15 @@ RUN apt-get update && apt-get install -y \
     openssh-client \
     && rm -rf /var/lib/apt/lists/*
 
-# Environment variables that will be used in the entrypoint.sh file    
-ARG REPOSITORY_URL
-ENV REPOSITORY_URL=$REPOSITORY_URL
-ARG RUNNER_TOKEN
-ENV RUNNER_TOKEN=$RUNNER_TOKEN
-ARG CLOUDFLARE_SSH_TUNNEL_ID
-ENV CLOUDFLARE_SSH_TUNNEL_ID=$CLOUDFLARE_SSH_TUNNEL_ID
-ARG CLOUDFLARE_SSH_TUNNEL_TOKEN
-ENV CLOUDFLARE_SSH_TUNNEL_TOKEN=$CLOUDFLARE_SSH_TUNNEL_TOKEN
+# Environment variables that will be used in the entrypoint.sh file
+ARG CL_SSH_SSHJHOFF_ID
+ENV CL_SSH_SSHJHOFF_ID=$CL_SSH_SSHJHOFF_ID
+ARG CL_SSH_SSHJHOFF_TOKEN
+ENV CL_SSH_SSHJHOFF_TOKEN=$CL_SSH_SSHJHOFF_TOKEN
+ARG GITHUB_PAT
+ENV GITHUB_PAT=$GITHUB_PAT
+ARG RSYNC_RUNNER_PRIVATE_KEY
+ENV RSYNC_RUNNER_PRIVATE_KEY=$RSYNC_RUNNER_PRIVATE_KEY
 
 # Copy the entrypoint.sh file and add write permission
 COPY entrypoint.sh /home/runner/entrypoint.sh
