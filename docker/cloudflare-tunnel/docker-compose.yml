@@ -1,5 +1,4 @@
-services:
-  cloudflared-settings:
+x-cloudflared-settings:
     &cloudflared-settings
       image: cloudflare/cloudflared:latest
       restart: unless-stopped
@@ -10,10 +9,8 @@ services:
           limits:
             cpus: 0.5
             memory: 100M
-          reservations:
-            cpus: 0.1
-            memory: 50M
 
+services:
   cloudflared-http:
     <<: *cloudflared-settings
     container_name: cloudflared-http
