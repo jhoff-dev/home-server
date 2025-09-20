@@ -9,7 +9,7 @@ OWNER_REPO=jhoff-dev
 
 # Generate token of runner
 RUNNER_TOKEN=$(curl -s -X POST \
-    -H "Authorization: token ${GITHUB_PAT}" \
+    -H "Authorization: token ${GITHUB_RUNNER_PAT}" \
     -H "Accept: application/vnd.github+json" \
     "https://api.github.com/repos/${OWNER_REPO}/${REPO}/actions/runners/registration-token" \
     | jq -r '.token')
@@ -30,7 +30,7 @@ chmod 700 .ssh
 # Creates the SSH configuration file to allow connecting via Cloudflare's SSH tunnel
 cat > .ssh/config <<EOF
 Host ssh.jhoff.site
-  ProxyCommand /usr/local/bin/cloudflared access ssh --hostname %h --id ${CLOUDFLARE_SSH_TUNNEL_ID} --secret ${CLOUDFLARE_SSH_TUNNEL_TOKEN} 
+  ProxyCommand /usr/local/bin/cloudflared access ssh --hostname %h --id ${CL_SSH_SSHJHOFF_ID} --secret ${CL_SSH_SSHJHOFF_TOKEN} 
   IdentityFile ~/.ssh/github-actions
   StrictHostKeyChecking no
   UserKnownHostsFile=/dev/null
@@ -38,7 +38,7 @@ EOF
 chmod 600 .ssh/config
 
 # Note: In this folder you also need to have the SSH private key to connect to the server
-cat > github-actions <<EOF
+cat > .ssh/github-actions <<EOF
 ${RSYNC_RUNNER_PRIVATE_KEY}
 EOF
 chmod 600 .ssh/github-actions

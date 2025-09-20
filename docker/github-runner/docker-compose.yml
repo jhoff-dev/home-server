@@ -1,5 +1,4 @@
-services:
-  runner-settings:
+x-runner-settings:
     &runner-settings
       user: "${UID}:${GID}"
       build:
@@ -26,6 +25,7 @@ services:
             cpus: 2
             memory: 4G
 
+services:
   runner_home_server:
     <<: *runner-settings
     container_name: runner-home-server
