@@ -38,9 +38,8 @@ EOF
 chmod 600 .ssh/config
 
 # Note: In this folder you also need to have the SSH private key to connect to the server
-cat > .ssh/github-actions <<EOF
-${RSYNC_RUNNER_PRIVATE_KEY}
-EOF
+# Place the SSH private key on a single line in .env, using "\n" between the comments so that the line breaks when the file is generated
+echo "$RSYNC_RUNNER_PRIVATE_KEY" > github.actions
 chmod 600 .ssh/github-actions
 
 exec ./run.sh
