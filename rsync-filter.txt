@@ -9,3 +9,4 @@
 - docs/
 - tests/
 - node_modules/
+- docker/web/apps/**/public
