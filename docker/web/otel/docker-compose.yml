@@ -28,6 +28,7 @@ services:
     restart: unless-stopped
     volumes:
       - grafana-data:/var/lib/grafana
+      - ./files/grafana.ini:/etc/grafana/grafana.ini
       - ./files/provisioning/dashboards:/etc/grafana/provisioning/dashboards
       - ./files/provisioning/datasources:/etc/grafana/provisioning/datasources
       - ./files/provisioning/dashboards:/var/lib/grafana/dashboards
