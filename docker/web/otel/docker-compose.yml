@@ -1,0 +1,140 @@
+services:
+  otel-collector:
+    image: otel/opentelemetry-collector:latest
+    container_name: otel-collector
+    restart: unless-stopped
+    command: --config=/etc/otel-collector-config.yaml
+    configs:
+      - source: otel-collector-config
+        target: /etc/otel-collector-config.yaml
+    networks:
+      - internal_proxy
+    #ports:
+    #  - 4318:4318 # OTLP HTTP
+    #  - 4317:4317 # OTLP GRPC
+    deploy:
+      resources:
+        limits:
+          cpus: 0.25
+          memory: 256M
+    depends_on:
+      - prometheus
+      - loki
+      - tempo
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./files/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./files/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - ./files/provisioning/dashboards:/var/lib/grafana/dashboards
+    networks:
+      - main_proxy
+      - internal_proxy
+    ports:
+      - 3000:3000
+    deploy:
+      resources:
+        limits:
+          cpus: 0.25
+          memory: 512M
+    depends_on:
+      - otel-collector
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - prometheus-data:/tmp/prometheus
+    configs:
+      - source: prometheus-config
+        target: /etc/prometheus/prometheus.yml
+    networks:
+      - internal_proxy
+    deploy:
+      resources:
+        limits:
+          cpus: 0.5
+          memory: 512M
+
+  loki:
+    image: grafana/loki:latest
+    container_name: grafana-loki
+    restart: unless-stopped
+    volumes:
+      - loki-data:/tmp/loki
+    configs:
+      - source: loki-config
+        target: /etc/loki/loki-config.yaml
+    networks:
+      - internal_proxy
+    deploy:
+      resources:
+        limits:
+          cpus: 0.5
+          memory: 512M
+    
+  tempo:
+    user: ${UID}:${GID}
+    image: grafana/tempo:latest
+    container_name: grafana-tempo
+    restart: unless-stopped
+    command: -config.file=/etc/tempo.yaml
+    volumes:
+      - tempo-data:/tmp/tempo
+    configs:
+      - source: tempo-config
+        target: /etc/tempo.yaml
+    networks:
+      - internal_proxy
+    deploy:
+      resources:
+        limits:
+          cpus: 0.5
+          memory: 1G
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    restart: unless-stopped
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    networks:
+      - internal_proxy
+    deploy:
+      resources:
+        limits:
+          cpus: 0.25
+          memory: 256M
+
+networks:
+  main_proxy:
+    name: main_proxy
+    external: true
+  internal_proxy:
+    name: internal_proxy
+    internal: true
+
+volumes:
+  prometheus-data:
+  loki-data:
+  tempo-data:
+  grafana-data:
+
+configs:
+  otel-collector-config:
+    file: ./files/otel-collector-config.yaml
+  prometheus-config:
+    file: ./files/prometheus.yml
+  loki-config:
+    file: ./files/loki-config.yaml
+  tempo-config:
+    file: ./files/tempo.yaml
