@@ -1074,7 +1074,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum without (dc,from,id,${sum_without:csv}) (irate(container_network_transmit_bytes_total{name=~\"$name\",instance=~\"$instance\",image!=\"\",interface=\"$interface\"}[5m]))",
+          "expr": "sum by (instance, name) ( irate(container_network_transmit_bytes_total{name=~\"$name\",instance=~\"$instance\",image!=\"\"}[5m]) )",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{name}}: {{instance}}",
@@ -1180,7 +1180,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum without (dc,from,id,${sum_without:csv}) (irate(container_network_receive_bytes_total{name=~\"$name\",instance=~\"$instance\",image!=\"\",interface=\"$interface\"}[5m]))",
+          "expr": "sum by (instance, name) ( irate(container_network_receive_bytes_total{name=~\"$name\",instance=~\"$instance\",image!=\"\"}[5m]) )",
           "instant": false,
           "interval": "",
           "intervalFactor": 2,
