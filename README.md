@@ -34,7 +34,7 @@ It also serves as a playground for learning about server management, automation,
 - GitHub Actions (for CI/CD)  
 - Cloudflare Tunnel configured with your domain  
 
-## Learning Goals
+## 📚 Learning Goals
 This repository is also a personal study space to:
 
 - Practice container orchestration
@@ -43,7 +43,7 @@ This repository is also a personal study space to:
 - Learn and apply DevOps principles
 - Build observability skills with Grafana monitoring
 
-## Roadmap
+## 🗺️ Roadmap
 - [ ] Add server for half-horizons project
 - [ ] Add stress testing tools like Jmeter
 - [ ] Add documentation about the tools and containers used in this repository
