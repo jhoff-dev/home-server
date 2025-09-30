@@ -31,6 +31,12 @@ services:
     container_name: runner-home-server
     environment:
       REPOSITORY_NAME: home-server
+      
+  runner_half_horizons:
+    <<: *runner-settings
+    container_name: runner-half-horizons
+    environment:
+      REPOSITORY_NAME: half-horizons
 
 networks:
   main_proxy:
