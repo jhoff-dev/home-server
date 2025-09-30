@@ -10,6 +10,7 @@ services:
       - ${PROJECT_ROOT}/docker/web/apps/:/apps/
     networks:
       - main_proxy
+      - public_proxy
     deploy:
       resources:
         limits:
@@ -22,4 +23,7 @@ services:
 networks:
   main_proxy:
     name: main_proxy
+    external: true
+  public_proxy:
+    name: public_proxy
     external: true

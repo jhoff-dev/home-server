@@ -1,0 +1,61 @@
+services:
+  database_half_horizons:
+    image: mysql:latest
+    container_name: database-half-horizons
+    restart: unless-stopped
+    volumes:
+      - database-half-horizons:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_USER: ${DB_HALFHORIZONS_USER}
+      MYSQL_ROOT_PASSWORD: ${DB_HALFHORIZONS_PASSWORD}
+      MYSQL_DATABASE: ${DB_HALFHORIZONS_NAME}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${DB_HALFHORIZONS_USER}", "--password=${DB_HALFHORIZONS_PASSWORD}"]
+      start_period: 10s
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      - public_proxy
+    deploy:
+      resources:
+        limits:
+          cpus: 1
+          memory: 1G
+
+  wordpress_half_horizons:
+    image: wordpress:php8.4-fpm
+    container_name: wordpress-half-horizons
+    restart: unless-stopped
+    volumes:
+      - ${PROJECT_ROOT}/docker/web/apps/half-horizons.jhoff.site/public:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: ${DB_HALFHORIZONS_HOST}
+      WORDPRESS_DB_USER: ${DB_HALFHORIZONS_USER}
+      WORDPRESS_DB_PASSWORD: ${DB_HALFHORIZONS_PASSWORD}
+      WORDPRESS_DB_NAME: ${DB_HALFHORIZONS_NAME}
+    depends_on:
+      database_half_horizons:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "test", "-f", "wp-config.php"]
+      start_period: 10s
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    networks:
+      - public_proxy
+    deploy:
+      resources:
+        limits:
+          cpus: 1
+          memory: 512M
+
+networks:
+  public_proxy:
+    name: public_proxy
+    external: true
+
+volumes:
+  database-half-horizons:
+    name: database-half-horizons
